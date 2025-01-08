@@ -3,6 +3,8 @@ import axios from 'axios'
 
 function List(){
     const [data,setData] = useState([])
+    const [editing,setEditing] = useState(false)
+    const [editdata,setEditData] =useState(null)
     useEffect(()=>{
         axios.get('http://127.0.0.1:8000/api/todo/').then((res)=>{
             console.log(res.data);
@@ -10,6 +12,10 @@ function List(){
         }).catch(error=>console.log(error.message))
         
     },[])
+    const Edit_dtls =(task) =>{
+        setEditing(true)
+        setEditData(task)
+    }
     return(
         <div className="container">
             <h1>Display Details</h1>
@@ -18,6 +24,7 @@ function List(){
                     <tr>
                         <th>Task</th>
                         <th>Description</th>
+                        {/* <th>Status</th> */}
                     </tr>
                 </thead>
                 <tbody>
@@ -25,15 +32,29 @@ function List(){
                         <tr key={index}>
                             <td>{value.task}</td>
                             <td>{value.description}</td>
-                            <td><button>Edit</button></td>
-                            <td><button>Delete</button></td>
+                            {/* <td>{value.compleated ? 'completed':'not'}</td> */}
+                            <td><button className="btn btn-outline-info" onClick={()=>{Edit_dtls(value)}}>Edit</button></td>
+                            <td><button className="btn btn-outline-danger" onClick={()=>{}}><i className="bi bi-trash3"></i></button></td>
 
                         </tr>
                     ))}
                 </tbody>
             </table>
+            {editing ? <EditForm  curTask={editdata}/>:null}
 
         </div>
     )
 }
+
+const EditForm = ({curTask})=>{
+    const [task,setTask] =useState(curTask)
+    return(
+        <form>
+            <input type="text" name="title" id="title" value={task.task}/>
+            <input type="text" name="description" id="description" value={task.description}/>
+            <input type="submit" value="update"/>
+        </form>
+    )
+}
+
 export default List
