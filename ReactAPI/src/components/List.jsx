@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react"
 import axios from 'axios'
+import Add from "./Add"
+
 
 function List(){
     const [data,setData] = useState([])
@@ -39,7 +41,6 @@ function List(){
                     <tr>
                         <th>Task</th>
                         <th>Description</th>
-                        {/* <th>Status</th> */}
                     </tr>
                 </thead>
                 <tbody>
@@ -47,7 +48,6 @@ function List(){
                         <tr key={index}>
                             <td>{value.task}</td>
                             <td>{value.description}</td>
-                            {/* <td>{value.compleated ? 'completed':'not'}</td> */}
                             <td><button className="btn btn-outline-info" onClick={()=>{Edit_dtls(value)}}>Edit</button></td>
                             <td><button className="btn btn-outline-danger" onClick={()=>{Delete_dtls(value.id)}}><i className="bi bi-trash3"></i></button></td>
 
@@ -55,7 +55,7 @@ function List(){
                     ))}
                 </tbody>
             </table>
-            {editing ? <EditForm  curTask={editdata} updatefun={updateDtls}/>:null}
+            {editing ? <EditForm  curTask={editdata} updatefun={updateDtls}/>:<Add/>}
 
         </div>
     )
